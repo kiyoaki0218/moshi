@@ -213,16 +213,16 @@ export const ExamPassSimulator: React.FC<{ onGoToRebirth: () => void }> = ({ onG
                 {passResult.advice}
               </div>
 
-              <div className="mt-6 flex flex-wrap justify-center gap-3 font-sans">
+              <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3 font-sans">
                 <button
                   onClick={() => setExamStatus('ready')}
-                  className="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-slate-800 hover:bg-slate-900 active:scale-95 text-white rounded-xl text-xs font-bold transition"
                 >
                   別の大学を受験する
                 </button>
                 <button
                   onClick={onGoToRebirth}
-                  className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-black shadow-md"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white rounded-xl text-xs font-black shadow-md transition"
                 >
                   周回して更なる難関大へ（強くてニューゲーム）
                 </button>
@@ -251,16 +251,16 @@ export const ExamPassSimulator: React.FC<{ onGoToRebirth: () => void }> = ({ onG
                 {passResult.advice}
               </p>
 
-              <div className="flex flex-wrap justify-center gap-3 pt-4">
+              <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4">
                 <button
                   onClick={() => setExamStatus('ready')}
-                  className="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-xs font-bold"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-slate-700 hover:bg-slate-600 active:scale-95 text-white rounded-xl text-xs font-bold transition"
                 >
                   リベンジ受験する
                 </button>
                 <button
                   onClick={onGoToRebirth}
-                  className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-rose-600 hover:opacity-90 text-white rounded-xl text-xs font-black shadow-md flex items-center space-x-1"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-amber-500 to-rose-600 hover:opacity-90 active:scale-95 text-white rounded-xl text-xs font-black shadow-md flex items-center justify-center space-x-1 transition"
                 >
                   <RotateCcw className="w-4 h-4" />
                   <span>強くてニューゲームで転生する</span>

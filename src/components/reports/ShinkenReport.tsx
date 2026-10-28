@@ -488,11 +488,11 @@ export const ShinkenReport: React.FC<ShinkenReportProps> = ({ result }) => {
                 </div>
               </div>
 
-              {/* 全国 / 都道府県 / 校内 切り替えピルボタン（ユーザー最重要リクエスト！） */}
-              <div className="flex items-center space-x-2">
+              {/* 全国 / 都道府県 / 校内 切り替えピルボタン（スクショ1枚目完全再現） */}
+              <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={() => setScope('national')}
-                  className={`px-6 py-2 rounded-lg text-xs sm:text-sm font-black transition ${
+                  className={`py-2 px-1 rounded-lg text-xs sm:text-sm font-black transition text-center ${
                     scope === 'national'
                       ? 'bg-[#0088e0] text-white shadow-md'
                       : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
@@ -502,71 +502,74 @@ export const ShinkenReport: React.FC<ShinkenReportProps> = ({ result }) => {
                 </button>
                 <button
                   onClick={() => setScope('pref')}
-                  className={`px-5 py-2 rounded-lg text-xs sm:text-sm font-black transition ${
+                  className={`py-2 px-1 rounded-lg text-xs sm:text-sm font-black transition text-center ${
                     scope === 'pref'
                       ? 'bg-[#0088e0] text-white shadow-md'
                       : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
                   }`}
                 >
-                  都道府県（{prefName}）
+                  都道府県
                 </button>
                 <button
                   onClick={() => setScope('school')}
-                  className={`px-5 py-2 rounded-lg text-xs sm:text-sm font-black transition ${
+                  className={`py-2 px-1 rounded-lg text-xs sm:text-sm font-black transition text-center ${
                     scope === 'school'
                       ? 'bg-[#0088e0] text-white shadow-md'
                       : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
                   }`}
                 >
-                  校内（学年）
+                  校内
                 </button>
               </div>
 
-              {/* 成績概況テーブル（スクショ1枚目完全再現） */}
-              <div className="overflow-x-auto bg-white rounded-xl border border-slate-200 shadow-sm">
-                <table className="w-full text-xs text-left border-collapse font-sans">
+              {/* 成績概況テーブル（スクショ1枚目完全再現・スマホジャストフィット） */}
+              <div className="overflow-hidden bg-white rounded-xl border border-slate-200 shadow-sm">
+                <table className="w-full text-xs text-left border-collapse font-sans table-fixed">
                   <thead>
-                    <tr className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 text-center">
-                      <th className="p-3 border-r border-slate-200 text-left w-36">科目</th>
-                      <th className="p-3 border-r border-slate-200 w-28">得点 / 満点</th>
-                      <th className="p-3 border-r border-slate-200 w-20 text-[#f06700]">偏差値</th>
-                      <th className="p-3">順位</th>
+                    <tr className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 text-center text-[11px] sm:text-xs">
+                      <th className="py-2.5 px-2 border-r border-slate-200 text-center w-[27%]">科目</th>
+                      <th className="py-2.5 px-1 border-r border-slate-200 w-[25%]">得点 / 満点</th>
+                      <th className="py-2.5 px-1 border-r border-slate-200 w-[18%] text-[#f06700]">偏差値</th>
+                      <th className="py-2.5 px-1 w-[30%]">順位</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 font-mono">
+                  <tbody className="divide-y divide-slate-100 font-mono text-[11px] sm:text-xs">
                     {/* 国数英総合 */}
                     <tr className="hover:bg-slate-50/60 font-bold">
-                      <td className="p-3 border-r border-slate-200 font-sans">国数英総合</td>
-                      <td className="p-3 border-r border-slate-200 text-center">{kseScore} / {kseMax}</td>
-                      <td className="p-3 border-r border-slate-200 text-center text-[#f06700] text-sm">
+                      <td className="py-2.5 px-2 border-r border-slate-200 font-sans truncate">国数英総合</td>
+                      <td className="py-2.5 px-1 border-r border-slate-200 text-center whitespace-nowrap">{kseScore} / {kseMax}</td>
+                      <td className="py-2.5 px-1 border-r border-slate-200 text-center text-[#f06700] font-black text-xs sm:text-sm">
                         {getScopeData(kseDev, kseRank).deviation}
                       </td>
-                      <td className="p-3 text-center">
-                        {getScopeData(kseDev, kseRank).rank.toLocaleString()} / {getScopeData(kseDev, kseRank).total.toLocaleString()}
+                      <td className="py-2 px-1 text-center leading-tight">
+                        <div className="font-bold text-slate-800">{getScopeData(kseDev, kseRank).rank.toLocaleString()}</div>
+                        <div className="text-[10px] text-slate-400">/ {getScopeData(kseDev, kseRank).total.toLocaleString()}</div>
                       </td>
                     </tr>
 
                     {/* 2教科国英 */}
                     <tr className="hover:bg-slate-50/60">
-                      <td className="p-3 border-r border-slate-200 font-sans">2教科国英</td>
-                      <td className="p-3 border-r border-slate-200 text-center">{keScore} / {keMax}</td>
-                      <td className="p-3 border-r border-slate-200 text-center text-[#f06700] font-bold">
+                      <td className="py-2.5 px-2 border-r border-slate-200 font-sans truncate">2教科国英</td>
+                      <td className="py-2.5 px-1 border-r border-slate-200 text-center whitespace-nowrap">{keScore} / {keMax}</td>
+                      <td className="py-2.5 px-1 border-r border-slate-200 text-center text-[#f06700] font-bold">
                         {getScopeData(keDev, keRank).deviation}
                       </td>
-                      <td className="p-3 text-center">
-                        {getScopeData(keDev, keRank).rank.toLocaleString()} / {getScopeData(keDev, keRank).total.toLocaleString()}
+                      <td className="py-2 px-1 text-center leading-tight">
+                        <div className="font-bold text-slate-800">{getScopeData(keDev, keRank).rank.toLocaleString()}</div>
+                        <div className="text-[10px] text-slate-400">/ {getScopeData(keDev, keRank).total.toLocaleString()}</div>
                       </td>
                     </tr>
 
                     {/* 2教科数英 */}
                     <tr className="hover:bg-slate-50/60">
-                      <td className="p-3 border-r border-slate-200 font-sans">2教科数英</td>
-                      <td className="p-3 border-r border-slate-200 text-center">{seScore} / {seMax}</td>
-                      <td className="p-3 border-r border-slate-200 text-center text-[#f06700] font-bold">
+                      <td className="py-2.5 px-2 border-r border-slate-200 font-sans truncate">2教科数英</td>
+                      <td className="py-2.5 px-1 border-r border-slate-200 text-center whitespace-nowrap">{seScore} / {seMax}</td>
+                      <td className="py-2.5 px-1 border-r border-slate-200 text-center text-[#f06700] font-bold">
                         {getScopeData(seDev, seRank).deviation}
                       </td>
-                      <td className="p-3 text-center">
-                        {getScopeData(seDev, seRank).rank.toLocaleString()} / {getScopeData(seDev, seRank).total.toLocaleString()}
+                      <td className="py-2 px-1 text-center leading-tight">
+                        <div className="font-bold text-slate-800">{getScopeData(seDev, seRank).rank.toLocaleString()}</div>
+                        <div className="text-[10px] text-slate-400">/ {getScopeData(seDev, seRank).total.toLocaleString()}</div>
                       </td>
                     </tr>
 
@@ -575,17 +578,18 @@ export const ShinkenReport: React.FC<ShinkenReportProps> = ({ result }) => {
                       const d = getScopeData(sub.deviationValue, sub.rank);
                       return (
                         <tr key={sub.subjectId} className="hover:bg-slate-50/60">
-                          <td className="p-3 border-r border-slate-200 font-sans font-medium text-slate-900">
+                          <td className="py-2.5 px-2 border-r border-slate-200 font-sans font-medium text-slate-900 truncate">
                             {sub.name}
                           </td>
-                          <td className="p-3 border-r border-slate-200 text-center font-bold">
+                          <td className="py-2.5 px-1 border-r border-slate-200 text-center font-bold whitespace-nowrap">
                             {sub.score} / {sub.maxScore}
                           </td>
-                          <td className="p-3 border-r border-slate-200 text-center font-black text-[#f06700]">
+                          <td className="py-2.5 px-1 border-r border-slate-200 text-center font-black text-[#f06700]">
                             {d.deviation}
                           </td>
-                          <td className="p-3 text-center">
-                            {d.rank.toLocaleString()} / {d.total.toLocaleString()}
+                          <td className="py-2 px-1 text-center leading-tight">
+                            <div className="font-bold text-slate-800">{d.rank.toLocaleString()}</div>
+                            <div className="text-[10px] text-slate-400">/ {d.total.toLocaleString()}</div>
                           </td>
                         </tr>
                       );
@@ -711,8 +715,8 @@ export const ShinkenReport: React.FC<ShinkenReportProps> = ({ result }) => {
                 </div>
 
                 {/* 大問別テーブル */}
-                <div className="border border-slate-200 rounded-xl overflow-hidden">
-                  <table className="w-full text-xs text-left border-collapse">
+                <div className="border border-slate-200 rounded-xl overflow-x-auto">
+                  <table className="w-full min-w-[340px] text-xs text-left border-collapse">
                     <thead>
                       <tr className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 text-center text-[11px]">
                         <th className="p-2.5 text-left w-36">大問・分野</th>

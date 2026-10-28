@@ -30,7 +30,7 @@ const AppContent: React.FC = () => {
       />
 
       {/* メインコンテンツエリア */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-24 md:pb-8">
         {activeTab === 'exam' && (
           <ExamRunner onExamFinished={() => setActiveTab('report')} />
         )}
@@ -70,7 +70,7 @@ const AppContent: React.FC = () => {
       />
 
       {/* フッター */}
-      <footer className="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
+      <footer className="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto mb-16 md:mb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center space-y-2">
           <p className="font-medium text-slate-300">
             大学受験 模試結果シミュレーター（進研模試・全統模試・駿台模試 リアルUI完全再現）

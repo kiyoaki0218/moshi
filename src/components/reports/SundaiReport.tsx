@@ -152,6 +152,10 @@ export const SundaiReport: React.FC<SundaiReportProps> = ({ result }) => {
                   <span className="inline-block w-2.5 h-2.5 bg-[#00a0e9] mr-1"></span>
                   <span>1 教科・科目別成績（２次型）</span>
                 </div>
+                {/* スマホ用スワイプガイド */}
+                <div className="md:hidden text-[10px] text-[#002f6c] font-bold py-1 px-2 mb-1 bg-sky-50 rounded flex items-center justify-center space-x-1">
+                  <span>← 横にスクロールして全体を確認できます →</span>
+                </div>
                 <div className="overflow-x-auto border border-[#00a0e9]">
                   <table className="w-full text-[10px] text-left border-collapse border border-[#00a0e9] bg-white font-mono">
                     <thead>
@@ -236,6 +240,10 @@ export const SundaiReport: React.FC<SundaiReportProps> = ({ result }) => {
                 <div className="flex items-center space-x-1 text-xs font-black text-slate-800 mb-1">
                   <span className="inline-block w-2.5 h-2.5 bg-[#00a0e9] mr-1"></span>
                   <span>2 成績集計コース別成績（２次型）</span>
+                </div>
+                {/* スマホ用スワイプガイド */}
+                <div className="md:hidden text-[10px] text-[#002f6c] font-bold py-1 px-2 mb-1 bg-sky-50 rounded flex items-center justify-center space-x-1">
+                  <span>← 横にスクロールして全体を確認できます →</span>
                 </div>
                 <div className="overflow-x-auto border border-[#00a0e9]">
                   <table className="w-full text-[10px] text-left border-collapse border border-[#00a0e9] bg-white font-mono">

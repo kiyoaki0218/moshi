@@ -99,6 +99,11 @@ export const ZentoReport: React.FC<ZentoReportProps> = ({ result }) => {
             </div>
           </div>
 
+          {/* スマホ用スワイプガイド */}
+          <div className="md:hidden text-[10px] text-[#1a4f9c] font-bold py-1 px-2 mb-1 bg-blue-50/70 rounded flex items-center justify-center space-x-1">
+            <span>← 横にスクロールして全体を確認できます →</span>
+          </div>
+
           <div className="overflow-x-auto border-2 border-[#1a4f9c]">
             <table className="w-full text-xs text-left border-collapse border border-[#1a4f9c] bg-white font-mono">
               <thead>

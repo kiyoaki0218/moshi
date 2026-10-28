@@ -111,75 +111,77 @@ export const StatusEditor: React.FC<{ onStartExam: () => void }> = ({ onStartExa
       )}
 
       {/* トップサマリーカード */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white shadow-xl border border-indigo-900/50">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-4 sm:p-6 text-white shadow-xl border border-indigo-900/50">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center space-x-2 text-indigo-400 text-sm font-semibold tracking-wider uppercase mb-1">
+            <div className="flex items-center space-x-2 text-indigo-400 text-xs sm:text-sm font-semibold tracking-wider uppercase mb-1">
               <Trophy className="w-4 h-4" />
               <span>受験生ステータス設定（育成モード）</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
+            <h2 className="text-xl sm:text-3xl font-black tracking-tight text-white flex flex-wrap items-center gap-2">
               <span>{userProfile.studentName}</span>
-              <span className="text-sm px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 font-medium">
+              <span className="text-xs sm:text-sm px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 font-medium">
                 {userProfile.track === 'humanities' ? '文系コース' : '理系コース'}
               </span>
             </h2>
-            <p className="text-slate-400 text-sm mt-1">
+            <p className="text-slate-400 text-xs sm:text-sm mt-1">
               {userProfile.highSchoolName} ・ {userProfile.grade}（{userProfile.loopCount}周目の受験生ライフ）
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2 text-center">
-              <div className="text-xs text-slate-400 font-medium">総合平均学力</div>
-              <div className="text-2xl font-black text-amber-400">Lv.{avgLevel}</div>
+            <div className="bg-slate-800/90 border border-slate-700 rounded-xl px-3.5 sm:px-4 py-2 text-center shrink-0">
+              <div className="text-[10px] sm:text-xs text-slate-400 font-medium">総合平均</div>
+              <div className="text-xl sm:text-2xl font-black text-amber-400">Lv.{avgLevel}</div>
             </div>
             <button
               onClick={onStartExam}
-              className="flex items-center space-x-2 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold px-5 py-3 rounded-xl shadow-lg shadow-rose-500/30 transition transform hover:-translate-y-0.5"
+              className="flex-1 lg:flex-none flex items-center justify-center space-x-2 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 active:scale-95 text-white font-bold px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl shadow-lg shadow-rose-500/30 transition"
             >
-              <span>この能力で模試を受験</span>
-              <ArrowRight className="w-5 h-5" />
+              <span>模試を受験する</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
 
-        {/* 育成プリセットボタン群 */}
-        <div className="mt-6 pt-5 border-t border-slate-800 flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold text-slate-400 mr-2 flex items-center gap-1">
+        {/* 育成プリセットボタン群（スマホ対応: 横スクロール可能ピル） */}
+        <div className="mt-4 pt-3 border-t border-slate-800">
+          <div className="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center gap-1">
             <Compass className="w-3.5 h-3.5 text-indigo-400" />
-            クイック育成プリセット:
-          </span>
-          <button
-            onClick={() => applyPreset('todai_sci')}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-indigo-900/60 text-indigo-200 text-xs font-medium rounded-lg border border-slate-700 hover:border-indigo-500/50 transition"
-          >
-            東大理系志望 (Lv.70〜85)
-          </button>
-          <button
-            onClick={() => applyPreset('kyodai_hum')}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-rose-900/60 text-rose-200 text-xs font-medium rounded-lg border border-slate-700 hover:border-rose-500/50 transition"
-          >
-            京大文系志望 (国・英Lv.75+)
-          </button>
-          <button
-            onClick={() => applyPreset('waseda_hum')}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-amber-900/60 text-amber-200 text-xs font-medium rounded-lg border border-slate-700 hover:border-amber-500/50 transition"
-          >
-            早慶私文特化 (3教科集中)
-          </button>
-          <button
-            onClick={() => applyPreset('med')}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-emerald-900/60 text-emerald-200 text-xs font-medium rounded-lg border border-slate-700 hover:border-emerald-500/50 transition"
-          >
-            国公立医学部 (全教科ハイエンド)
-          </button>
-          <button
-            onClick={() => applyPreset('standard')}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 transition"
-          >
-            標準リセット (Lv.50前後)
-          </button>
+            <span>クイック育成プリセット（タップで瞬時に実力反映）:</span>
+          </div>
+          <div className="flex overflow-x-auto scrollbar-none space-x-2 py-1">
+            <button
+              onClick={() => applyPreset('todai_sci')}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-indigo-900/60 active:scale-95 text-indigo-200 text-xs font-medium rounded-lg border border-slate-700 hover:border-indigo-500/50 transition whitespace-nowrap shrink-0"
+            >
+              東大理系 (Lv.70〜85)
+            </button>
+            <button
+              onClick={() => applyPreset('kyodai_hum')}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-rose-900/60 active:scale-95 text-rose-200 text-xs font-medium rounded-lg border border-slate-700 hover:border-rose-500/50 transition whitespace-nowrap shrink-0"
+            >
+              京大文系 (国・英Lv.75+)
+            </button>
+            <button
+              onClick={() => applyPreset('waseda_hum')}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-amber-900/60 active:scale-95 text-amber-200 text-xs font-medium rounded-lg border border-slate-700 hover:border-amber-500/50 transition whitespace-nowrap shrink-0"
+            >
+              早慶私文 (3教科集中)
+            </button>
+            <button
+              onClick={() => applyPreset('med')}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-emerald-900/60 active:scale-95 text-emerald-200 text-xs font-medium rounded-lg border border-slate-700 hover:border-emerald-500/50 transition whitespace-nowrap shrink-0"
+            >
+              国公立医学部 (全科ハイエンド)
+            </button>
+            <button
+              onClick={() => applyPreset('standard')}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 transition whitespace-nowrap shrink-0"
+            >
+              標準リセット (Lv.50前後)
+            </button>
+          </div>
         </div>
       </div>
 
@@ -321,24 +323,38 @@ export const StatusEditor: React.FC<{ onStartExam: () => void }> = ({ onStartExa
                     <span className="font-bold text-sm text-slate-800">
                       {subject.name}
                     </span>
-                    <div className="flex items-center space-x-2">
-                      <span className={`text-xs px-2.5 py-0.5 rounded-full border ${badgeColor}`}>
+                    <div className="flex items-center space-x-1.5">
+                      <span className={`text-xs px-2 py-0.5 rounded-full border ${badgeColor}`}>
                         Lv.{subject.level}
                       </span>
-                      {/* マイナス・プラスボタン */}
+                      {/* マイナス・プラスボタン（スマホ最適化: 押しやすいタッチターゲット） */}
                       <button
                         onClick={() => updateSubjectLevel(subject.id, subject.level - 5)}
-                        className="w-6 h-6 flex items-center justify-center bg-white border border-slate-200 rounded text-slate-600 hover:bg-slate-100 text-xs font-bold"
+                        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 active:scale-90 text-xs font-bold transition shadow-2xs"
                         title="-5"
                       >
-                        -
+                        -5
+                      </button>
+                      <button
+                        onClick={() => updateSubjectLevel(subject.id, subject.level - 1)}
+                        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 active:scale-90 text-xs font-bold transition shadow-2xs"
+                        title="-1"
+                      >
+                        -1
+                      </button>
+                      <button
+                        onClick={() => updateSubjectLevel(subject.id, subject.level + 1)}
+                        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 active:scale-90 text-xs font-bold transition shadow-2xs"
+                        title="+1"
+                      >
+                        +1
                       </button>
                       <button
                         onClick={() => updateSubjectLevel(subject.id, subject.level + 5)}
-                        className="w-6 h-6 flex items-center justify-center bg-indigo-600 text-white rounded hover:bg-indigo-700 text-xs font-bold shadow-sm"
+                        className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 active:scale-90 text-xs font-bold transition shadow-xs"
                         title="+5"
                       >
-                        +
+                        +5
                       </button>
                     </div>
                   </div>
