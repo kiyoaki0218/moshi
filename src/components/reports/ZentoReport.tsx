@@ -264,7 +264,7 @@ export const ZentoReport: React.FC<ZentoReportProps> = ({ result }) => {
                   <div key={judge.university.id} className="border border-[#1a4f9c]/30 rounded-lg p-3 bg-[#f8fafc] flex items-center justify-between">
                     <div>
                       <div className="text-[11px] font-bold text-[#1a4f9c]">
-                        第{judge.choiceRank}志望 ・ {judge.university.type === 'national' ? '国立' : '私立'}
+                        第{judge.choiceRank}志望 ・ {judge.university.type === 'national' ? '国立' : judge.university.type === 'public' ? '公立' : '私立'}
                       </div>
                       <div className="font-black text-sm text-slate-900">{judge.university.name}</div>
                       <div className="text-xs text-slate-600">{judge.university.faculty}</div>

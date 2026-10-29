@@ -148,7 +148,7 @@ export const ExamPassSimulator: React.FC<{ onGoToRebirth: () => void }> = ({ onG
                   >
                     <div>
                       <div className="text-xs font-bold text-slate-500">
-                        {u.type === 'national' ? '国立' : '私立'} ・ ボーダー偏差値: {u.borders.zento}
+                        {u.type === 'national' ? '国立' : u.type === 'public' ? '公立' : '私立'} ・ ボーダー偏差値: {u.borders.zento}
                       </div>
                       <div className="font-black text-sm text-slate-900 mt-0.5">{u.name}</div>
                       <div className="text-xs text-slate-600">{u.faculty}</div>

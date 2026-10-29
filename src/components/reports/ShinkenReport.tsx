@@ -827,8 +827,7 @@ export const ShinkenReport: React.FC<ShinkenReportProps> = ({ result }) => {
                     <Building2 className="w-8 h-8" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded">
-                      {currentChoice.university.type === 'national' ? '国公立' : '私立'}
+                    <span className="text-xs font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded">                       {currentChoice.university.type === 'national' ? '国立' : currentChoice.university.type === 'public' ? '公立' : '私立'}
                     </span>
                     <h3 className="text-xl font-black text-slate-900 mt-1">
                       {currentChoice.university.name}

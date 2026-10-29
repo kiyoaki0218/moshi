@@ -17,7 +17,7 @@ export const TargetUniversityManager: React.FC = () => {
   } = useGame();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState<'all' | 'national' | 'private'>('all');
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'national' | 'public' | 'private'>('all');
   const [showAddModal, setShowAddModal] = useState(false);
 
   // 新規カスタム大学用ステート
@@ -225,7 +225,15 @@ export const TargetUniversityManager: React.FC = () => {
                 selectedFilter === 'national' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
-              国公立大
+              国立大
+            </button>
+            <button
+              onClick={() => setSelectedFilter('public')}
+              className={`px-3 py-1.5 rounded-lg font-medium transition ${
+                selectedFilter === 'public' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              公立大
             </button>
             <button
               onClick={() => setSelectedFilter('private')}

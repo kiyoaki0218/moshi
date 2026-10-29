@@ -78,7 +78,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [universities, setUniversities] = useState<University[]>(() => {
     const saved = localStorage.getItem('moshi_universities');
-    return saved ? JSON.parse(saved) : INITIAL_UNIVERSITIES;
+    if (!saved) return INITIAL_UNIVERSITIES;
+    try {
+      const parsed: University[] = JSON.parse(saved);
+      if (!Array.isArray(parsed) || parsed.length === 0) return INITIAL_UNIVERSITIES;
+      // 保存後に追加された公式データの大学を取り込む（カスタム大学は保持）
+      const savedIds = new Set(parsed.map(u => u.id));
+      const addedDefaults = INITIAL_UNIVERSITIES.filter(u => !savedIds.has(u.id));
+      return addedDefaults.length > 0 ? [...parsed, ...addedDefaults] : parsed;
+    } catch {
+      return INITIAL_UNIVERSITIES;
+    }
   });
 
   const [selectedUniversityIds, setSelectedUniversityIds] = useState<string[]>(() => {
