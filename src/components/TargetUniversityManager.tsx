@@ -5,8 +5,31 @@ import {
   BookmarkCheck, 
   Plus, 
   Search, 
-  Check
+  Check,
+  ChevronDown
 } from 'lucide-react';
+
+// 区分ラベル
+const typeLabel = (t: University['type']): string =>
+  t === 'national' ? '国立' : t === 'public' ? '公立' : '私立';
+
+// 模試別ボーダー偏差値の表示グリッド
+const borderGrid = (univ: University) => (
+  <div className="grid grid-cols-3 gap-1 pt-2 mt-2 border-t border-slate-100 text-center text-[10px]">
+    <div className="bg-slate-50 p-1 rounded">
+      <span className="text-slate-400 block">全統ボーダー</span>
+      <strong className="text-slate-800 font-mono text-xs">{univ.borders.zento}</strong>
+    </div>
+    <div className="bg-[#fce4ec]/50 p-1 rounded">
+      <span className="text-[#d81b60] block">進研ボーダー</span>
+      <strong className="text-[#d81b60] font-mono text-xs">{univ.borders.shinken}</strong>
+    </div>
+    <div className="bg-[#002f6c]/10 p-1 rounded">
+      <span className="text-[#002f6c] block">駿台ボーダー</span>
+      <strong className="text-[#002f6c] font-mono text-xs">{univ.borders.sundai}</strong>
+    </div>
+  </div>
+);
 
 export const TargetUniversityManager: React.FC = () => {
   const { 
@@ -19,6 +42,7 @@ export const TargetUniversityManager: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'national' | 'public' | 'private'>('all');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [expandedUnivName, setExpandedUnivName] = useState<string | null>(null); // 学部一覧を展開中の大学
 
   // 新規カスタム大学用ステート
   const [newUniv, setNewUniv] = useState({
@@ -96,6 +120,20 @@ export const TargetUniversityManager: React.FC = () => {
     if (selectedFilter === 'all') return matchQuery;
     return matchQuery && u.type === selectedFilter;
   });
+
+  // 大学名ごとに学部をまとめる（元データの並び順を維持）
+  const universityGroups = filteredUniversities.reduce<{ name: string; entries: University[] }[]>(
+    (groups, u) => {
+      const existing = groups.find(g => g.name === u.name);
+      if (existing) {
+        existing.entries.push(u);
+      } else {
+        groups.push({ name: u.name, entries: [u] });
+      }
+      return groups;
+    },
+    []
+  );
 
   return (
     <div className="space-y-6">
@@ -246,56 +284,129 @@ export const TargetUniversityManager: React.FC = () => {
           </div>
         </div>
 
-        {/* 大学一覧グリッド */}
+        {/* 大学別一覧グリッド（大学をタップすると学部・学科が展開） */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {filteredUniversities.map((univ) => {
-            const isSelected = selectedUniversityIds.includes(univ.id);
-            const choiceIndex = selectedUniversityIds.indexOf(univ.id);
+          {universityGroups.map((group) => {
+            const isSingle = group.entries.length === 1;
+            const isExpanded = searchQuery.trim() !== '' || expandedUnivName === group.name;
+            const selectedEntries = group.entries.filter(e => selectedUniversityIds.includes(e.id));
+            const isGroupSelected = selectedEntries.length > 0;
+            const choiceIndex = isGroupSelected
+              ? Math.min(...selectedEntries.map(e => selectedUniversityIds.indexOf(e.id)))
+              : -1;
+            const typeLabels = Array.from(new Set(group.entries.map(e => typeLabel(e.type))));
+            const locations = Array.from(new Set(group.entries.map(e => e.location)));
+
+            const handleGroupTap = () => {
+              if (isSingle) {
+                toggleSelectUniv(group.entries[0].id);
+              } else {
+                setExpandedUnivName(prev => (prev === group.name ? null : group.name));
+              }
+            };
 
             return (
               <div
-                key={univ.id}
-                onClick={() => toggleSelectUniv(univ.id)}
-                className={`p-3.5 rounded-xl border-2 cursor-pointer transition flex flex-col justify-between ${
-                  isSelected
+                key={group.name}
+                onClick={handleGroupTap}
+                className={`rounded-xl border-2 overflow-hidden cursor-pointer transition ${
+                  isGroupSelected
                     ? 'border-indigo-600 bg-indigo-50/40 shadow-sm'
                     : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50'
                 }`}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
-                      {univ.type === 'national' ? '国立' : univ.type === 'public' ? '公立' : '私立'} ・ {univ.location}
-                    </span>
-                    {isSelected ? (
-                      <span className="text-xs font-bold text-white bg-indigo-600 px-2 py-0.5 rounded-full flex items-center gap-1">
-                        <Check className="w-3 h-3" />
-                        第{choiceIndex + 1}志望
-                      </span>
-                    ) : (
-                      <span className="text-xs text-slate-400">タップで選択</span>
-                    )}
+                <div className="p-3.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="flex items-center flex-wrap gap-1.5 mb-1.5">
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                          {typeLabels.join('・')} ・ {locations.join(' / ')}
+                        </span>
+                        {!isSingle && (
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-600">
+                            {group.entries.length}学部
+                          </span>
+                        )}
+                      </div>
+
+                      <h4 className="font-black text-slate-900 text-sm">{group.name}</h4>
+                      {isSingle ? (
+                        <p className="text-xs text-slate-600 mt-0.5">{group.entries[0].faculty}</p>
+                      ) : (
+                        <p className="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1">
+                          <span>
+                            {isExpanded
+                              ? searchQuery.trim()
+                                ? '検索に一致した学部を表示中'
+                                : 'タップで閉じる'
+                              : 'タップして学部・学科を見る'}
+                          </span>
+                          <ChevronDown className={`w-3.5 h-3.5 transition ${isExpanded ? 'rotate-180' : ''}`} />
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="shrink-0">
+                      {isGroupSelected ? (
+                        <span className="text-xs font-bold text-white bg-indigo-600 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                          <Check className="w-3 h-3" />
+                          {isSingle ? `第${choiceIndex + 1}志望` : `${selectedEntries.length}学部選択`}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-slate-400">
+                          {isSingle ? 'タップで選択' : '未選択'}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  <h4 className="font-black text-slate-900 text-sm">{univ.name}</h4>
-                  <p className="text-xs text-slate-600 mb-2">{univ.faculty}</p>
+                  {isSingle && borderGrid(group.entries[0])}
                 </div>
 
-                {/* 模試別ボーダー偏差値表示 */}
-                <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-100 text-center text-[10px]">
-                  <div className="bg-slate-50 p-1 rounded">
-                    <span className="text-slate-400 block">全統ボーダー</span>
-                    <strong className="text-slate-800 font-mono text-xs">{univ.borders.zento}</strong>
+                {!isSingle && isExpanded && (
+                  <div className="border-t border-slate-100 bg-slate-50/60 p-2 space-y-2">
+                    {group.entries.map((univ) => {
+                      const isEntrySelected = selectedUniversityIds.includes(univ.id);
+                      const entryChoiceIndex = selectedUniversityIds.indexOf(univ.id);
+
+                      return (
+                        <div
+                          key={univ.id}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleSelectUniv(univ.id);
+                          }}
+                          className={`p-3 rounded-lg border-2 cursor-pointer transition ${
+                            isEntrySelected
+                              ? 'border-indigo-500 bg-white shadow-sm'
+                              : 'border-slate-200 bg-white hover:border-indigo-300'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="min-w-0">
+                              <p className="font-bold text-slate-800 text-xs sm:text-sm truncate">
+                                {univ.faculty}
+                              </p>
+                              <p className="text-[10px] text-slate-400 mt-0.5">
+                                {typeLabel(univ.type)} ・ {univ.location}
+                              </p>
+                            </div>
+                            {isEntrySelected ? (
+                              <span className="text-[11px] font-bold text-white bg-indigo-600 px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
+                                <Check className="w-3 h-3" />
+                                第{entryChoiceIndex + 1}志望
+                              </span>
+                            ) : (
+                              <span className="text-[11px] text-slate-400 shrink-0">タップで選択</span>
+                            )}
+                          </div>
+
+                          {borderGrid(univ)}
+                        </div>
+                      );
+                    })}
                   </div>
-                  <div className="bg-[#fce4ec]/50 p-1 rounded">
-                    <span className="text-[#d81b60] block">進研ボーダー</span>
-                    <strong className="text-[#d81b60] font-mono text-xs">{univ.borders.shinken}</strong>
-                  </div>
-                  <div className="bg-[#002f6c]/10 p-1 rounded">
-                    <span className="text-[#002f6c] block">駿台ボーダー</span>
-                    <strong className="text-[#002f6c] font-mono text-xs">{univ.borders.sundai}</strong>
-                  </div>
-                </div>
+                )}
               </div>
             );
           })}
